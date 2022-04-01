@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar 29 10:17:05 2022
-
-@author: garzo
-"""
 # Importar librerías necesarias para el proyecto
 import matplotlib.pyplot as plt
 import numpy as np
@@ -67,7 +61,6 @@ def preProcessDatos(ArchivoCSV):
     data.shape
 
     print("Los datos han sido preprocesados")
-    print(data.head())
     return data
 
 
@@ -76,7 +69,7 @@ train_csv = "train.csv"
 test_csv = "test.csv"
 
 # Creación de archivos CSV
-crear_csv = True # Si es True, los valores de los audios se guardaran en un archivo csv
+crear_csv = False # Si es True, los valores de los audios se guardaran en un archivo csv
                  # Como es una tarea que consume mucho tiempo, se dejará en False si ya se tienen los archivos
 
 if (crear_csv == True):
@@ -94,8 +87,64 @@ testData = preProcessDatos(test_csv)
 
 # -------------- ENTENDER LOS DATOS DE AUDIO Y HABLAR SOBRE COMO SE EXPRESAN LAS VOCALES ------------------
 
-# Tomar un audio por ejemplo y graficarlo
+
 # Explicar que significa cada una de las características del audio
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+
+plt.figure()
+for i in range(0,54):
+    arreglo = np.array(trainData.iloc[[i]])
+    arreglo = np.transpose(arreglo)
+    arreglo = arreglo[6:24]
+    arreglo = scaler.fit_transform(arreglo)
+    x = np.linspace(0,18,18)
+    plt.title("mfcc letra A")
+    plt.plot(x,arreglo)
+    
+plt.figure()  
+for i in range(55,108):
+    arreglo = np.array(trainData.iloc[[i]])
+    arreglo = np.transpose(arreglo)
+    arreglo = arreglo[6:24]
+    arreglo = scaler.fit_transform(arreglo)
+    x = np.linspace(0,18,18)
+    plt.title("mfcc letra E")
+    plt.plot(x,arreglo)
+    
+plt.figure()   
+for i in range(109,161):
+    arreglo = np.array(trainData.iloc[[i]])
+    arreglo = np.transpose(arreglo)
+    arreglo = arreglo[6:24]
+    arreglo = scaler.fit_transform(arreglo)
+    x = np.linspace(0,18,18)
+    plt.title("mfcc letra I")
+    plt.plot(x,arreglo)
+
+plt.figure()   
+for i in range(162,215):
+    arreglo = np.array(trainData.iloc[[i]])
+    arreglo = np.transpose(arreglo)
+    arreglo = arreglo[6:24]
+    arreglo = scaler.fit_transform(arreglo)
+    x = np.linspace(0,18,18)
+    plt.title("mfcc letra O")
+    plt.plot(x,arreglo)
+
+plt.figure()
+for i in range(216,269):
+    arreglo = np.array(trainData.iloc[[i]])
+    arreglo = np.transpose(arreglo)
+    arreglo = arreglo[6:24]
+    arreglo = scaler.fit_transform(arreglo)
+    x = np.linspace(0,18,18)
+    plt.title("mfcc letra U")
+    plt.plot(x,arreglo)
+
+
+# Also known as pitch class profile (PCP). Chroma representations measure the amount of relative energy in each pitch class (e.g., the 12 notes in the chromatic scale) at a given frame/time.
+
 # Determinar características importantes en la clasificación de vocales y características que podemos omitir
 
 # ----------------------------- DEFINIR DATOS DE VALIDACIÓN, TRAIN Y TEST ---------------------------------
@@ -112,20 +161,16 @@ y_test = testData.iloc[:, -1]
 
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
-X_train = scaler.fit_transform( X_train )
-X_val = scaler.transform( X_val )
-X_test = scaler.transform( X_test )
-
-# ver graficas de datos procesados y averiguar si se requiere algún ajuste
+X_train = scaler.fit_transform( X_train ) # Datos de entrenamiento
+X_val = scaler.transform( X_val ) # Datos de validación
+X_test = scaler.transform( X_test ) # Datos de test
 
 # ----------------------------------------- CREACIÓN DEL MODELO ---------------------------------------------
 import keras
 from keras import models
 from keras import layers
 
-
 # ------------------------------------------ TEST Y RESULTADOS ----------------------------------------------
 # matriz de confusión
 # Reporte de clasificación
 # Accuracy - Performance
-
